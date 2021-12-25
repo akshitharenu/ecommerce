@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+          {{category.description|truncatewords:155 }}
+    {% else %}
+        Welcome To OLIVIA Store where you can buys good outfits with reasonable rate
+    {% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+          {{category.name}} - OLIVIA
+    {% else %}
+        See our new collections - OLIVIA
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+     <div>
+         <div class="row my_row_class">
+             <div class="mx-auto">
+             <p> <a href= "{% url 'shop:allProdCat' %}">Our product collections</a></p>
+
+         </div>
+         </div>
+     </div>
+     {% endif %}
+<div>
+    {% if category %}
+    <img  class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+    </div>
+    <br>
+<div class="mx_auto">
+      <h1 class="text-center my_title">{{category.name}}</h1>
+      <p class="text-justify">{{category.description}}</p>
+    </div>
+    {% else %}
+<div>
+    <center>
+    <img class="my_image my_image_padding" src="{% static 'img/banner.jpg' %}" alt="our products" height="500" width="1100">
+    </center>
+</div>
+<br>
+<div>
+   <h1 class="text-center my_title"> our products collections</h1>
+   <p class="text-justify">A dress (also known as a frock or a gown) is a garment traditionally worn by women or girls consisting of a skirt with an attached bodice (or a matching bodice giving the effect of a one-piece garment).[1] It consists of a top piece that covers the torso and hangs down over the legs. A dress can be any one-piece garment containing a skirt of any length, and can be formal or casual.
+
+</p>
+</div>
+
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+      {% for product in products.object_list %}
+    <div class="my_bottom_margin col-6 col-sm-12 col-md-4 col-lg-4" >
+
+        <div class="card text-center" style="min-width:18rem;">
+           <a href="{{product.get_url}}"><img class="card-img-top my_image" style="height:350px;" src="{{product.image.url}}" alt="{{product.name}}"></a>
+       <div class="card-body">
+           <h4>{{product.name}}</h4>
+           <p>{{product.price}}</p>
+        </div>
+       </div>
+   </div>
+     {% endfor %}
+  </div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+               <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+             {% endfor %}
+ </div>
+
+   {% endif %}
+    </div>
+    <br>
+</div>
+
+
+{% endblock %}
+</div>
